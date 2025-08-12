@@ -7,6 +7,10 @@ The web version uses [zozlib.js](https://github.com/tsoding/zozlib.js) which is 
 ## Building the web version
 
 - Install c3c and add it to your PATH environment variable.
-- `$ make`
-- `$ npx http-server`
+- Install npm and enable pnpm.
+- ```
+    make
+    pnpx live-server
+    ```
+
 - Open <http://127.0.0.1:8080>
