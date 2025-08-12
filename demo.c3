@@ -1,7 +1,7 @@
 // ./c3c compile --reloc=none --target wasm32 -g0 --link-libc=no --use-stdlib=no --no-entry -o web web.c3
 import raylib;
 
-def Entry = fn void();
+alias Entry = fn void();
 
 extern fn void raylib_js_set_entry(Entry entry) @wasm;
 

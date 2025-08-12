@@ -1,7 +1,7 @@
 module raylib;
 
-def Color = char[<4>];
-def Vector2 = float[<2>];
+alias Color = char[<4>];
+alias Vector2 = float[<2>];
 
 struct ColorStruct {
     char r;
