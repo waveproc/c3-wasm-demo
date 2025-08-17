@@ -7,14 +7,14 @@ extern fn void raylib_js_set_entry(Entry entry) @wasm;
 
 Object[20] objects;
 
-const Vector2 PLAYER_SIZE = {100, 100};
-const Vector2 GRAVITY = {0, 1000};
+const Vec2 PLAYER_SIZE = {100, 100};
+const Vec2 GRAVITY = {0, 1000};
 const int N = 10;
 const float COLLISION_DAMP = 1;
 
 struct Object {
-    Vector2 position;
-    Vector2 velocity;
+    Vec2 position;
+    Vec2 velocity;
     Color color;
 }
 
