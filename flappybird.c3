@@ -1,9 +1,6 @@
-// c3c compile -D PLATFORM_WEB --reloc=none --target wasm32 -O3 -g0 --link-libc=no --no-entry -o demo -z --export-table flappybird.c3 raylib.c3
-module flappybird;
-
-import raylib;
-alias Entry = fn void();
-extern fn void raylib_js_set_entry(Entry entry) @wasm;
+// c3c compile -D PLATFORM_WEB --reloc=none --target wasm32 -O3 -g0 --link-libc=no --use-stdlib=no --no-entry -o demo -z --export-table flappybird.c3 rl.c3
+import rl;
+// import std::io;
 
 alias Vec2 = float[<2>];
 
@@ -53,69 +50,69 @@ fn Vec2 clamp(Vec2 x, Vec2 upper, Vec2 lower)
 
 fn void draw_bird(Vec2 pos, bool wingUp) {
     // Body
-    raylib::draw_circle_v({pos.x, pos.y}, (float)birdRadius, raylib::YELLOW);
+    rl::draw_circle_v({pos.x, pos.y}, (float)birdRadius, rl::YELLOW);
 
-    // // Beak
-    // raylib::draw_triangle(
+    // Beak
+    // rl::draw_triangle(
     //     {pos.x + (float)birdRadius, pos.y},
     //     {pos.x + (float)birdRadius + 10.0f, pos.y - 5.0f},
     //     {pos.x + (float)birdRadius + 10.0f, pos.y + 5.0f},
-    //     raylib::ORANGE
+    //     rl::ORANGE
     // );
 
     // Eye
-    raylib::draw_circle_v({pos.x + (float)birdRadius / 3.0f, pos.y - (float)birdRadius / 3.0f}, 5.0f, raylib::WHITE);
-    raylib::draw_circle_v({pos.x + (float)birdRadius / 3.0f, pos.y - (float)birdRadius / 3.0f}, 2.0f, raylib::BLACK);
+    rl::draw_circle_v({pos.x + (float)birdRadius / 3.0f, pos.y - (float)birdRadius / 3.0f}, 5.0f, rl::WHITE);
+    rl::draw_circle_v({pos.x + (float)birdRadius / 3.0f, pos.y - (float)birdRadius / 3.0f}, 2.0f, rl::BLACK);
 
-    // // Wing
-    // float wingAngle = wingUp ? -15.0f : 15.0f;
-    // raylib::draw_triangle(
+    // Wing
+    float wingAngle = wingUp ? -15.0f : 15.0f;
+    // rl::draw_triangle(
     //     {pos.x - 5.0f, pos.y},
     //     {pos.x - 25.0f, pos.y + wingAngle},
     //     {pos.x - 5.0f, pos.y + 10.0f},
-    //     raylib::BROWN
+    //     rl::BROWN
     // );
 }
 
 fn void draw_pipe(float x, float gapY, int gapHalf) {
     // Pipe
-    raylib::draw_rectangle((int)x, 0, 60, (int)(gapY - (float)gapHalf), raylib::GREEN);
-    raylib::draw_rectangle((int)x, (int)(gapY + (float)gapHalf), 60, WINDOW_HEIGHT - (int)(gapY + (float)gapHalf) - 40, raylib::GREEN);
+    rl::draw_rectangle((int)x, 0, 60, (int)(gapY - (float)gapHalf), rl::GREEN);
+    rl::draw_rectangle((int)x, (int)(gapY + (float)gapHalf), 60, WINDOW_HEIGHT - (int)(gapY + (float)gapHalf) - 40, rl::GREEN);
 
     // Pipe Cap
-    raylib::draw_rectangle((int)x - 5, (int)(gapY - (float)gapHalf) - 20, 70, 20, raylib::DARKGREEN);
-    raylib::draw_rectangle((int)x - 5, (int)(gapY + (float)gapHalf), 70, 20, raylib::DARKGREEN);
+    rl::draw_rectangle((int)x - 5, (int)(gapY - (float)gapHalf) - 20, 70, 20, rl::DARKGREEN);
+    rl::draw_rectangle((int)x - 5, (int)(gapY + (float)gapHalf), 70, 20, rl::DARKGREEN);
 }
 
-// fn void draw_ground_trees(float[] treeX) {
-//     for (int i = 0; i < treeX.len; i++) {
-//         float baseY = (float)WINDOW_HEIGHT - 40.0f;
-//         raylib::draw_rectangle((int)treeX[i] - 5, (int)baseY - 30, 10, 30, raylib::BROWN);
-//         raylib::draw_circle_v({(int)treeX[i], (float)((int)baseY - 40)}, 15.0f, raylib::DARKGREEN);
-//     }
-// }
+fn void draw_ground_trees(float[] treeX) {
+    for (int i = 0; i < treeX.len; i++) {
+        float baseY = (float)WINDOW_HEIGHT - 40.0f;
+        rl::draw_rectangle((int)treeX[i] - 5, (int)baseY - 30, 10, 30, rl::BROWN);
+        rl::draw_circle_v({(int)treeX[i], (float)((int)baseY - 40)}, 15.0f, rl::DARKGREEN);
+    }
+}
 
 fn void draw_clouds(Vec2[] clouds) {
     for (int i = 0; i < clouds.len; i++) {
-        raylib::draw_circle_v({clouds[i].x, clouds[i].y}, 20.0f, raylib::LIGHTGRAY);
-        raylib::draw_circle_v({clouds[i].x + 20.0f, clouds[i].y + 5.0f}, 18.0f, raylib::LIGHTGRAY);
-        raylib::draw_circle_v({clouds[i].x - 20.0f, clouds[i].y + 5.0f}, 18.0f, raylib::LIGHTGRAY);
+        rl::draw_circle_v({clouds[i].x, clouds[i].y}, 20.0f, rl::LIGHTGRAY);
+        rl::draw_circle_v({clouds[i].x + 20.0f, clouds[i].y + 5.0f}, 18.0f, rl::LIGHTGRAY);
+        rl::draw_circle_v({clouds[i].x - 20.0f, clouds[i].y + 5.0f}, 18.0f, rl::LIGHTGRAY);
     }
 }
 
 fn void game_frame() @wasm {
-    float dt = raylib::get_frame_time();
+    float dt = rl::get_frame_time();
     gameTime += dt;
 
     // Input
     switch {
-        case (raylib::is_key_pressed(raylib::KEY_SPACE) || raylib::is_key_pressed(raylib::KEY_UP)):
+        case (rl::is_key_pressed(rl::KEY_SPACE) || rl::is_key_pressed(rl::KEY_UP)):
             birdVel += flapImpulse;
             birdVel = clamp(birdVel, (Vec2){0, -650}, (Vec2){0,0});
-        // case (raylib::is_mouse_button_down(raylib::MouseButton.LEFT)):
+        // case (rl::is_mouse_button_down(rl::MouseButton.LEFT)):
         //     birdVel += flapImpulse / 14;
         //     birdVel = math::clamp(birdVel, (Vec2){0, -650}, (Vec2){0,0});
-        // case (raylib::is_mouse_button_down(raylib::MouseButton.RIGHT) || raylib::is_key_pressed(raylib::KEY_DOWN)):
+        // case (rl::is_mouse_button_down(rl::MouseButton.RIGHT) || rl::is_key_pressed(rl::KEY_DOWN)):
         //     birdVel -= flapImpulse / 14;
         //     birdVel = math::clamp(birdVel, (Vec2){0, +350}, (Vec2){0,0});
     }
@@ -135,7 +132,7 @@ fn void game_frame() @wasm {
     pipeX -= 300.0f * dt + (float)(gameTime * 0.3);
     if (pipeX < -60.0f) {
         pipeX = (float)WINDOW_WIDTH;
-        pipeGapY = (float)raylib::get_random_value(0, (WINDOW_HEIGHT - 200)) + 100.0f;
+        pipeGapY = (float)rl::get_random_value(0, (WINDOW_HEIGHT - 200)) + 100.0f;
         passedPipe = false;
     }
 
@@ -161,21 +158,21 @@ fn void game_frame() @wasm {
         }
     }
 
-    raylib::@drawing()
+    rl::@drawing()
     {
-        raylib::clear_background(raylib::SKYBLUE);
+        rl::clear_background(rl::SKYBLUE);
 
         draw_clouds(clouds);
-        // draw_ground_trees(treeX);
+        draw_ground_trees(treeX);
 
         // Ground? sure
-        raylib::draw_rectangle(0, WINDOW_HEIGHT - 40, WINDOW_WIDTH, 40, raylib::BROWN);
+        rl::draw_rectangle(0, WINDOW_HEIGHT - 40, WINDOW_WIDTH, 40, rl::BROWN);
 
         draw_pipe(pipeX, pipeGapY, gapHalf);
         draw_bird(birdPos, wingUp);
 
         // Score
-        // raylib::draw_text(string::tformat_zstr("Score: %d", score), 10, 10, 30, raylib::BLACK);
+        // rl::draw_text(string::tformat_zstr("Score: %d", score), 10, 10, 30, rl::BLACK);
     };
 
     // Collision
@@ -195,21 +192,16 @@ fn void game_frame() @wasm {
         score = 0;
         passedPipe = false;
         gameTime = 0;
-        raylib::@drawing()
+        rl::@drawing()
         {
-            raylib::clear_background(raylib::RED);
+            rl::clear_background(rl::RED);
         };
     }
 }
 
 fn void main() @extern("main") @wasm {
-    raylib::init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Flappy Bird in C3 - Enhanced");
-    raylib::set_target_fps(60);
+    rl::init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Flappy Bird in C3 - Enhanced");
+    rl::set_target_fps(60);
 
-    raylib_js_set_entry(&game_frame);
-    while (!raylib::window_should_close()) {
-        game_frame();
-    }
-
-    raylib::close_window();
+    rl::raylib_js_set_entry(&game_frame);
 }

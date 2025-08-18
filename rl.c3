@@ -1,14 +1,10 @@
-module raylib;
+module rl;
 
 alias Color = char[<4>];
 alias Vec2 = float[<2>];
 
-struct ColorStruct {
-    char r;
-    char g;
-    char b;
-    char a;
-}
+alias Entry = fn void();
+extern fn void raylib_js_set_entry(Entry entry) @wasm;
 
 // Some Basic Colors
 // NOTE: Custom raylib color palette for amazing visuals on WHITE background
@@ -36,6 +32,7 @@ const Color DARKBROWN   = { 76, 63, 47, 255 };      // Dark Brown
 
 const Color WHITE       = { 255, 255, 255, 255 };   // White
 const Color BLACK       = { 0, 0, 0, 255 };         // Black
+const Color ORIG_BLACK  = { 0x18, 0x18, 0x18, 0xFF };
 const Color BLANK       = { 0, 0, 0, 0 };           // Blank (Transparent)
 const Color MAGENTA     = { 255, 0, 255, 255 };     // Magenta
 const Color RAYWHITE    = { 245, 245, 245, 255 };   // My own White (raylib logo)
@@ -164,7 +161,7 @@ extern fn bool window_should_close() @extern("WindowShouldClose");
 extern fn void begin_drawing() @extern("BeginDrawing");
 extern fn void clear_background(char[4] color) @extern("ClearBackground");
 extern fn void end_drawing() @extern("EndDrawing");
-extern fn void draw_rectangle(int posX, int posY, int width, int height, Color color) @extern("DrawRectangle");
+extern fn void draw_rectangle(int posX, int posY, int width, int height, char[4] color) @extern("DrawRectangle");
 extern fn float get_frame_time() @extern("GetFrameTime");
 extern fn void draw_rectangle_v(float[2] position, float[2] size, char[4] color) @extern("DrawRectangleV");
 extern fn int get_screen_width() @extern("GetScreenWidth");
@@ -172,13 +169,13 @@ extern fn int get_screen_height() @extern("GetScreenHeight");
 extern fn Color color_from_hsv(float hue, float saturation, float value) @extern("ColorFromHSV");
 extern fn int get_random_value(int min, int max) @extern("GetRandomValue");
 
-extern fn void draw_spline(Vec2 *points, int pointCount, float thick, Color color) @extern("DrawSplineLinear");
-extern fn void draw_circle_v(Vec2 center, float radius, Color color) @extern("DrawCircleV");
-// extern fn void draw_triangle_fan(Vec2 *points, int pointCount, Color color) @extern("DrawTriangleFan");
-// extern fn void draw_triangle(Vec2 v1, Vec2 v2, Vec2 v3, Color color) @extern("DrawTriangle");
-// extern fn void draw_triangle_strip(Vec2 *points, int pointCount, Color color) @extern("DrawTriangleStrip");
+extern fn void draw_spline(Vec2 *points, int pointCount, float thick, char[4] color) @extern("DrawSplineLinear");
+extern fn void draw_circle_v(float[2] center, float radius, char[4] color) @extern("DrawCircleV");
+// extern fn void draw_triangle_fan(Vec2 *points, int pointCount, char[4] color) @extern("DrawTriangleFan");
+extern fn void draw_triangle(Vec2 v1, Vec2 v2, Vec2 v3, char[4] color) @extern("DrawTriangle");
+// extern fn void draw_triangle_strip(Vec2 *points, int pointCount, char[4] color) @extern("DrawTriangleStrip");
 
-extern fn void draw_text(char *text, int posX, int posY, int fontSize, Color color) @extern("DrawText");
+extern fn void draw_text(char *text, int posX, int posY, int fontSize, char[4] color) @extern("DrawText");
 extern fn bool is_key_pressed(KeyboardKey key) @extern("IsKeyPressed");
 
 
