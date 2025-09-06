@@ -1,7 +1,7 @@
 // This flappybird game was created by ManuLinares:
 // https://github.com/ManuLinares/flappybird-c3/blob/master/src/main.c3
 
-// c3c compile -D PLATFORM_WEB --reloc=none --target wasm32 -O3 -g0 --link-libc=no --use-stdlib=no --no-entry -o demo -z --export-table flappybird.c3 rl.c3
+// c3c compile -D PLATFORM_WEB --reloc=none --target wasm32 -O3 -g0 --no-entry -o demo -z --export-table flappybird.c3 rl.c3
 import rl;
 // import std::io;
 
@@ -175,7 +175,7 @@ fn void game_frame() @wasm {
         draw_bird(birdPos, wingUp);
 
         // Score
-        // rl::draw_text(string::tformat_zstr("Score: %d", score), 10, 10, 30, rl::BLACK);
+        rl::draw_text(string::tformat_zstr("Score: %d", score), 10, 10, 30, rl::BLACK);
     };
 
     // Collision
@@ -203,6 +203,7 @@ fn void game_frame() @wasm {
 }
 
 fn void main() @extern("main") @wasm {
+    runtime::wasm_initialize();
     rl::init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Flappy Bird in C3 - Enhanced");
     rl::set_target_fps(60);
 
