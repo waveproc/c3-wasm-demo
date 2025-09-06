@@ -12,6 +12,7 @@ fn void game_frame() @wasm
         rl::clear_background(rl::SKYBLUE);
         rl::draw_rectangle_v({0,0}, {100,100}, rl::GREEN);
         rl::draw_circle_v({(float)rl::get_screen_width() / 2, (float)rl::get_screen_height() / 2}, 50, rl::YELLOW);
+        rl::draw_text("hello", 100, 100, 50, rl::PURPLE);
     rl::end_drawing();
 }
 

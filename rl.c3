@@ -172,7 +172,7 @@ extern fn void draw_circle_v(float[2] center, float radius, char[4] color) @exte
 extern fn bool is_key_pressed(KeyboardKey key) @extern("IsKeyPressed");
 
 extern fn void draw_triangle(float[2] p1, float[2] p2, float[2] p3, char[4] color) @extern("DrawTriangle");
-// extern fn void draw_text(char *text, int posX, int posY, int fontSize, char[4] color) @extern("DrawText");
+extern fn void draw_text(char *text, int posX, int posY, int fontSize, char[4] color) @extern("DrawText");
 
 
 macro void @drawing(;@body)
