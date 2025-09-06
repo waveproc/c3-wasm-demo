@@ -9,7 +9,7 @@ The web version uses [zozlib.js](https://github.com/tsoding/zozlib.js) which is 
 - Install c3c and add it to your PATH environment variable.
 - Install npm and enable pnpm.
 - ```
-    make
+    c3c compile ...
     pnpx live-server
     ```
 

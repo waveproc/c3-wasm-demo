@@ -168,15 +168,11 @@ extern fn int get_screen_width() @extern("GetScreenWidth");
 extern fn int get_screen_height() @extern("GetScreenHeight");
 extern fn Color color_from_hsv(float hue, float saturation, float value) @extern("ColorFromHSV");
 extern fn int get_random_value(int min, int max) @extern("GetRandomValue");
-
-extern fn void draw_spline(Vec2 *points, int pointCount, float thick, char[4] color) @extern("DrawSplineLinear");
 extern fn void draw_circle_v(float[2] center, float radius, char[4] color) @extern("DrawCircleV");
-// extern fn void draw_triangle_fan(Vec2 *points, int pointCount, char[4] color) @extern("DrawTriangleFan");
-extern fn void draw_triangle(Vec2 v1, Vec2 v2, Vec2 v3, char[4] color) @extern("DrawTriangle");
-// extern fn void draw_triangle_strip(Vec2 *points, int pointCount, char[4] color) @extern("DrawTriangleStrip");
-
-extern fn void draw_text(char *text, int posX, int posY, int fontSize, char[4] color) @extern("DrawText");
 extern fn bool is_key_pressed(KeyboardKey key) @extern("IsKeyPressed");
+
+extern fn void draw_triangle(float[2] p1, float[2] p2, float[2] p3, char[4] color) @extern("DrawTriangle");
+// extern fn void draw_text(char *text, int posX, int posY, int fontSize, char[4] color) @extern("DrawText");
 
 
 macro void @drawing(;@body)

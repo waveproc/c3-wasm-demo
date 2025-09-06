@@ -1,3 +1,6 @@
+// This flappybird game was created by ManuLinares:
+// https://github.com/ManuLinares/flappybird-c3/blob/master/src/main.c3
+
 // c3c compile -D PLATFORM_WEB --reloc=none --target wasm32 -O3 -g0 --link-libc=no --use-stdlib=no --no-entry -o demo -z --export-table flappybird.c3 rl.c3
 import rl;
 // import std::io;
@@ -22,7 +25,7 @@ float[] treeX = {150.0f, 350.0f, 550.0f, 750.0f};
 Vec2[] clouds = {
     {100.0f, 100.0f},
     {400.0f, 80.0f},
-    {700.0f, 120.0f}
+    {700.0f, 120.0f},
 };
 float startTime;
 float gameTime;
@@ -53,12 +56,12 @@ fn void draw_bird(Vec2 pos, bool wingUp) {
     rl::draw_circle_v({pos.x, pos.y}, (float)birdRadius, rl::YELLOW);
 
     // Beak
-    // rl::draw_triangle(
-    //     {pos.x + (float)birdRadius, pos.y},
-    //     {pos.x + (float)birdRadius + 10.0f, pos.y - 5.0f},
-    //     {pos.x + (float)birdRadius + 10.0f, pos.y + 5.0f},
-    //     rl::ORANGE
-    // );
+    rl::draw_triangle(
+        {pos.x + (float)birdRadius, pos.y - 5.0f},
+        {pos.x + (float)birdRadius, pos.y + 5.0f},
+        {pos.x + (float)birdRadius + 10.0f, pos.y},
+        rl::ORANGE
+    );
 
     // Eye
     rl::draw_circle_v({pos.x + (float)birdRadius / 3.0f, pos.y - (float)birdRadius / 3.0f}, 5.0f, rl::WHITE);
@@ -66,12 +69,12 @@ fn void draw_bird(Vec2 pos, bool wingUp) {
 
     // Wing
     float wingAngle = wingUp ? -15.0f : 15.0f;
-    // rl::draw_triangle(
-    //     {pos.x - 5.0f, pos.y},
-    //     {pos.x - 25.0f, pos.y + wingAngle},
-    //     {pos.x - 5.0f, pos.y + 10.0f},
-    //     rl::BROWN
-    // );
+    rl::draw_triangle(
+        {pos.x - 5.0f, pos.y},
+        {pos.x - 25.0f, pos.y + wingAngle},
+        {pos.x - 5.0f, pos.y + 10.0f},
+        rl::BROWN
+    );
 }
 
 fn void draw_pipe(float x, float gapY, int gapHalf) {

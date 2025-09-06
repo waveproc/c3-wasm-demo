@@ -166,6 +166,20 @@ class RaylibJs {
         this.ctx.fill();
     }
 
+    DrawTriangle(p1_ptr, p2_ptr, p3_ptr, color_ptr) {
+        const buffer = this.exports.memory.buffer;
+        const p1 = new Float32Array(buffer, p1_ptr, 2);
+        const p2 = new Float32Array(buffer, p2_ptr, 2);
+        const p3 = new Float32Array(buffer, p3_ptr, 2);
+        this.ctx.beginPath();
+        this.ctx.moveTo(p1[0], p1[1]);
+        this.ctx.lineTo(p2[0], p2[1]);
+        this.ctx.lineTo(p3[0], p3[1]);
+        const color = getColorFromMemory(buffer, color_ptr);
+        this.ctx.fillStyle = color;
+        this.ctx.fill();
+    }
+
     ClearBackground(color_ptr) {
         this.ctx.fillStyle = getColorFromMemory(this.exports.memory.buffer, color_ptr);
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
