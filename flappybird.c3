@@ -30,6 +30,13 @@ Vec2[] clouds = {
 float startTime;
 float gameTime;
 
+// Polyfill for missing libc function
+fn usz strlen(char* str) @extern("strlen") @wasm {
+    usz len = 0;
+    while (str[len] != 0) len++;
+    return len;
+}
+
 fn Vec2 min(Vec2 a, Vec2 b)
 {
     Vec2 result;
